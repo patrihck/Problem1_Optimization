@@ -48,5 +48,5 @@ var indexedDataModel = dataIndexer.GetIndexesOfRowsWhereCellValueExistsInOtherCo
 
 var rowColumnIndex = 1;
 dataSorter.SortByColumn(indexedDataModel, rowColumnIndex);
-dataWriter.WriteData("Input\\MediumSmallExample.txt", indexedDataModel.Rows);
+dataWriter.WriteData("Input\\FinallMediumExample.txt", indexedDataModel.Rows);
 Console.ReadKey();
