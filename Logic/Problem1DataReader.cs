@@ -1,9 +1,4 @@
 ﻿using Problem1_Optimization.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Problem1_Optimization.Logic
 {

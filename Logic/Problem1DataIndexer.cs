@@ -1,22 +1,34 @@
-﻿namespace Problem1_Optimization.Logic
+﻿using Problem1_Optimization.Model;
+
+namespace Problem1_Optimization.Logic
 {
     internal class Problem1DataIndexer
     {
-        public int[] GetIndexesOfRowsWithDoubledColumns(string[][] rows, int column1Index, int column2Index)
+        public Problem1DataModel GetIndexesOfRowsWhereCellValueExistsInOtherColumn(string[][] rows, int column1Index, int column2Index)
         {
-            List<int> indexes = new List<int>();
+            List<string[]> indexesWithValues = new List<string[]>();
             var higherIndex = Math.Max(column1Index, column2Index);
             //TODO add validation method - if higherIndex is equal or higher than columns.Length, then operatio is not allowed
 
             for (int i = 0; i < rows.Length; i++)
             {
-                if (rows[i][column1Index] == rows[i][column2Index])
+                if (CheckIfValueExistsInOtherColumn(rows, column2Index, rows[i][column1Index]))
                 {
-                    indexes.Add(i);
+                    indexesWithValues.Add(new string[2] { rows[i][column2Index], (i + 1).ToString() });
+                }
+                else
+                {
+                    rows[i][column1Index] = String.Empty;
+                    rows[i][column2Index] = String.Empty;
                 }
             }
 
-            return indexes.ToArray();
+            return new Problem1DataModel { Rows = indexesWithValues.ToArray() };
+        }
+
+        private bool CheckIfValueExistsInOtherColumn(string[][] rows, int column1Index, string value)
+        {
+            return rows.Any(row => row[column1Index] == value);
         }
     }
 }

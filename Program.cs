@@ -33,18 +33,18 @@ using System.Diagnostics;
 
 
 var dataReader = new Problem1DataReader();
-var dataModel = dataReader.GetProblem1DataModelFromFile(DataReaderConstants.TinyExamplePath);
+var dataModel = dataReader.GetProblem1DataModelFromFile(DataReaderConstants.MediumExamplePath);
 
 var dataSorter = new Problem1DataSorter();
 dataSorter.SortByColumn(dataModel, 0);
 
 var dataWriter = new Problem1DataWriter();
-dataWriter.WriteData("Input\\TinyExample-Sorted.txt", dataModel);
+dataWriter.WriteData("Input\\MediumExample-Sorted.txt", dataModel.Rows);
 
 var dataIndexer = new Problem1DataIndexer();
-var indexes = dataIndexer.GetIndexesOfRowsWithDoubledColumns(dataModel.Rows, 0, 1);
+var indexedDataModel = dataIndexer.GetIndexesOfRowsWhereCellValueExistsInOtherColumn(dataModel.Rows, 0, 1);
 
-var dataConverter = new Problem1DataConverter();
-var finalDataModel = dataConverter.ConvertToValuesAndIndexesOfDoubledColumns(dataModel, indexes);
-dataWriter.WriteData("Input\\FinalTinyExample.txt", finalDataModel);
+var rowColumnIndex = 1;
+dataSorter.SortByColumn(indexedDataModel, rowColumnIndex);
+dataWriter.WriteData("Input\\MediumSmallExample.txt", indexedDataModel.Rows);
 Console.ReadKey();
