@@ -33,7 +33,7 @@ using System.Diagnostics;
 
 
 var dataReader = new Problem1DataReader();
-var dataModel = dataReader.GetProblem1DataModelFromFile(DataReaderConstants.MediumExamplePath);
+var dataModel = dataReader.GetProblem1DataModelFromFile(DataReaderConstants.BigExamplePath);
 
 var dataSorter = new Problem1DataSorter();
 dataSorter.SortByColumn(dataModel, 0);
@@ -42,7 +42,9 @@ var dataWriter = new Problem1DataWriter();
 dataWriter.WriteData("Input\\MediumExample-Sorted.txt", dataModel.Rows);
 
 var dataIndexer = new Problem1DataIndexer();
-var indexedDataModel = dataIndexer.GetIndexesOfRowsWhereCellValueExistsInOtherColumn(dataModel.Rows, 0, 1);
+var column1 = dataModel.Rows.Select(row => row[0]).ToArray();
+var column2 = dataModel.Rows.Select(row => row[1]).ToArray();
+var indexedDataModel = dataIndexer.GetIndexesOfRowsWhereCellValueExistsInOtherColumn(column1, column2);
 
 var rowColumnIndex = 1;
 dataSorter.SortByColumn(indexedDataModel, rowColumnIndex);

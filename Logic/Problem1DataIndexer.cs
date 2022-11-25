@@ -1,34 +1,30 @@
 ﻿using Problem1_Optimization.Model;
+using System.Diagnostics;
 
 namespace Problem1_Optimization.Logic
 {
     internal class Problem1DataIndexer
     {
-        public Problem1DataModel GetIndexesOfRowsWhereCellValueExistsInOtherColumn(string[][] rows, int column1Index, int column2Index)
+        public Problem1DataModel GetIndexesOfRowsWhereCellValueExistsInOtherColumn(string[] column1, string[] column2)
         {
-            List<string[]> indexesWithValues = new List<string[]>();
-            var higherIndex = Math.Max(column1Index, column2Index);
-            //TODO add validation method - if higherIndex is equal or higher than columns.Length, then operatio is not allowed
+            string[] doubledValues = new string[column1.Length];
 
-            for (int i = 0; i < rows.Length; i++)
+            Parallel.For(0, column1.Length , i =>
             {
-                if (CheckIfValueExistsInOtherColumn(rows, column2Index, rows[i][column1Index]))
+                var valueFromSecondColumn = column2.SingleOrDefault(value => value == column1[i]);
+
+                if (valueFromSecondColumn != null)
                 {
-                    indexesWithValues.Add(new string[2] { rows[i][column2Index], (i + 1).ToString() });
+                    doubledValues[i] = column2[i];
                 }
                 else
                 {
-                    rows[i][column1Index] = String.Empty;
-                    rows[i][column2Index] = String.Empty;
+                    column2[i] = null;
                 }
-            }
+            });
 
-            return new Problem1DataModel { Rows = indexesWithValues.ToArray() };
-        }
-
-        private bool CheckIfValueExistsInOtherColumn(string[][] rows, int column1Index, string value)
-        {
-            return rows.Any(row => row[column1Index] == value);
+            return new Problem1DataModel { Rows = doubledValues.Where(row => row != null)
+                .Select(row => new string[2] { row, (Array.IndexOf(doubledValues, row) + 1).ToString() }).ToArray() };
         }
     }
 }
